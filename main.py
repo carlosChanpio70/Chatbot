@@ -26,7 +26,7 @@ with ui.column().classes('w-full h-screen'):
         chat_scroll.scroll_to(percent=100)
 
     with ui.row().classes("w-full flex-auto"):
-        with ui.input().props('rounded outlined dense').on('keydown.enter', lambda: Chat(input.value)) as input:
-            resultado = ui.button("Enviar", on_click=lambda: Chat(input.value))
+        with ui.input().props('rounded outlined dense').classes("flex-1").on('keydown.enter', lambda: Chat(input.value)) as input:
+            resultado = ui.button(icon='send', on_click=lambda: Chat(input.value))
 
-ui.run(host='127.1.1.1',port=8080, title='Chatbot')
+ui.run(host='127.2.2.1',port=8080, title='Chatbot')
