@@ -1,6 +1,8 @@
 import random
 import nltk # type: ignore
 from nltk.chat.util import Chat, reflections # type: ignore
+#Carlos Alexandre Camarino Terra, Eduardo Toledo França
+
 
 #.\venv\Scripts\Activate.ps1
 

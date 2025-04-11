@@ -1,5 +1,7 @@
 from nicegui import ui
 from chatbot import Chatbot
+#Carlos Alexandre Camarino Terra, Eduardo Toledo França
+
 
 # Add custom CSS to disable scrolling on the page
 ui.add_head_html("""
@@ -29,4 +31,5 @@ with ui.column().classes('w-full h-screen'):
         with ui.input().props('rounded outlined dense').classes("flex-1").on('keydown.enter', lambda: Chat(input.value)) as input:
             resultado = ui.button(icon='send', on_click=lambda: Chat(input.value))
 
-ui.run(host='127.2.2.1',port=8080, title='Chatbot')
+ui.run(host='127.1.1.1',port=8080, title='Chatbot')
+#Carlos Alexandre Camarino Terra, Eduardo Toledo França
