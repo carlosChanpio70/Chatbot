@@ -17,7 +17,7 @@ ui.add_head_html("""
 """)
 
 with ui.column().classes('w-full h-screen'):
-    with ui.scroll_area().classes('w-full h-3/4 border bg-gray-400') as chat_scroll:
+    with ui.scroll_area().classes('w-full h-3/4 border bg-gray-200') as chat_scroll:
         chat = ui.markdown().classes('w-full')
 
     def Chat(input):
