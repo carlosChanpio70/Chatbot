@@ -16,27 +16,27 @@ pairs = [
         "Eu sou o DentalBot, um assistente virtual especializado em cuidados dentários."]],
     [r"o que você faz\?", [
         "Eu sou um chatbot especializado em cuidados dentários. Posso responder perguntas sobre saúde bucal."]],
-    [r"como oque\?", [
+    [r"como o que\?|de que forma\?|como você ajuda\?", [
         "Posso ajudar com informações sobre escovação, cáries, gengivite, cuidados com próteses e muito mais."]],
-    [r"como escovar os dentes", [
+    [r"como devo escovar os dentes\?", [
         "Você deve escovar os dentes por pelo menos 2 minutos, 2 a 3 vezes ao dia, com uma escova macia e creme dental."]],
-    [r"como evitar cáries", [
+    [r"como evitar cáries\?", [
         "Escove os dentes regularmente, use fio dental, evite açúcar em excesso e visite seu dentista regularmente."]],
-    [r"o que é cárie\?", ["A cárie é uma deterioração dos dentes causada por bactérias que produzem ácidos a partir de restos de alimentos."]],
-    [r"devo usar fio dental todos os dias\?", [
+    [r"o que é uma cárie\?", ["A cárie é uma deterioração dos dentes causada por bactérias que produzem ácidos a partir de restos de alimentos."]],
+    [r"devo usar fio dental diariamente\?", [
         "Sim! O uso diário do fio dental ajuda a remover a placa entre os dentes e prevenir gengivite e cáries."]],
-    [r"o que causa mau hálito\?", [
+    [r"o que causa o mau hálito\?", [
         "O mau hálito pode ser causado por má higiene bucal, boca seca, problemas estomacais ou infecções bucais."]],
     [r"com que frequência devo ir ao dentista\?", [
         "O ideal é visitar o dentista a cada 6 meses para uma avaliação e limpeza."]],
-    [r"porque devo limpar a lingua\?", [
+    [r"por que devo limpar a lingua\?", [
         "Limpar a língua evita o acúmulo de bactérias, resíduos de alimentos e células mortas."]],
     [r"como devo limpar a lingua\?", [
         "Após escovar os dentes, você pode usar um raspador lingual ou uma escova."]],
     [r"o que é gengivite\?", ["A gengivite é uma inflamação na gengiva, geralmente causada pelo acúmulo de placa bacteriana, e pode causar sangramento e inchaço."]],
     [r"escovar os dentes com força faz mal\?", [
         "Sim, escovar com muita força pode desgastar o esmalte dos dentes e machucar a gengiva. Use movimentos suaves e circulares."]],
-    [r"qual a escova de dentes ideal\?", [
+    [r"qual é a escova de dentes ideal\?", [
         "Prefira escovas com cerdas macias e cabeça pequena, que alcançam todas as áreas da boca sem machucar."]],
     [r"posso escovar os dentes logo após comer\?", [
         "O ideal é esperar cerca de 30 minutos após as refeições para escovar os dentes, principalmente após alimentos ácidos."]],
