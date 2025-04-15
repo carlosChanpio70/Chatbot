@@ -17,6 +17,10 @@ ui.add_head_html("""
 """)
 
 with ui.column().classes('w-full h-screen'):
+    
+    ui.label('Bem-vindo ao DentalBot') \
+        .classes('text-2xl font-bold text-center p-4 border-b border-gray-300 bg-white shadow-sm')
+    
     with ui.scroll_area().classes('w-full h-3/4 border bg-gray-200') as chat_scroll:
         chat = ui.markdown().classes('w-full')
 
