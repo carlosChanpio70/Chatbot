@@ -1,5 +1,6 @@
 import nltk
 from nltk.chat.util import Chat, reflections
+from nltk.metrics import edit_distance
 
 # Ensure NLTK resources are downloaded
 try:
@@ -94,8 +95,9 @@ chatbot = Chat(pairs, reflections)
 
 
 def Chatbot(user_input):
-    # Tokenize the user input
-    tokens = nltk.word_tokenize(user_input.lower())
+    user_input = user_input.lower()
+    best_match = None
+    best_score = float('inf')  # Lower scores are better for edit distance
 
     # Iterate through the defined patterns
     for pattern, responses in pairs:
@@ -103,15 +105,44 @@ def Chatbot(user_input):
         alternatives = pattern.split('|')
 
         for alternative in alternatives:
-            # Tokenize the alternative pattern
-            pattern_tokens = nltk.word_tokenize(alternative.lower())
+            # Calculate the Levenshtein distance between the user input and the pattern
+            distance = edit_distance(user_input, alternative.lower())
 
-            # Find common tokens between the user input and the pattern
-            common_tokens = set(tokens) & set(pattern_tokens)
+            # Update the best match if the current distance is smaller
+            if distance < best_score:
+                best_match = responses[0]
+                best_score = distance
 
-            # Heuristic to check for a match based on the number of common tokens
-            if common_tokens and len(common_tokens) >= len(pattern_tokens) // 2:
-                return responses[0]  # Return the first response for simplicity
+    # Return the best match if the score is within a reasonable threshold
+    if best_score <= 10:  # Adjust the threshold based on testing
+        return best_match
 
-    # Fallback to the original regex-based matching if no token-based match is found
+    # Fallback to the original regex-based matching if no good match is found
     return chatbot.respond(user_input)
+
+def test_chatbot():
+    failed_tests = []
+    for pattern, responses in pairs:
+        # Use the first alternative in the pattern for testing
+        test_input = pattern.split('|')[0].replace(r'\?', '?')  # Replace escaped '?' for natural input
+        expected_response = responses[0]
+
+        # Get the chatbot's response
+        actual_response = Chatbot(test_input)
+
+        # Check if the response matches the expected response
+        if actual_response != expected_response:
+            failed_tests.append((test_input, expected_response, actual_response))
+
+    # Print the test results
+    if not failed_tests:
+        print("All tests passed!")
+    else:
+        print(f"{len(failed_tests)} test(s) failed:")
+        for test_input, expected, actual in failed_tests:
+            print(f"Input: {test_input}")
+            print(f"Expected: {expected}")
+            print(f"Actual: {actual}")
+            print("-" * 50)
+        
+test_chatbot()
