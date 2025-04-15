@@ -145,4 +145,7 @@ def test_chatbot():
             print(f"Actual: {actual}")
             print("-" * 50)
         
-test_chatbot()
+        
+if __name__ == "__main__":
+    # Run the tests when the script is executed directly
+    test_chatbot()
