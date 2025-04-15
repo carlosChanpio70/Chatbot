@@ -2,6 +2,7 @@ import random
 import nltk # type: ignore
 from nltk.chat.util import Chat, reflections # type: ignore
 #Carlos Alexandre Camarino Terra, Eduardo Toledo França
+#DentalBot
 
 
 #.\venv\Scripts\Activate.ps1
@@ -23,10 +24,6 @@ pairs = [
     [r"crianças precisam usar fio dental\?", ["Sim, crianças devem usar fio dental assim que dois dentes estiverem encostando, para prevenir cáries entre eles."]],
     [r"(.*)", ["Desculpe, ainda estou aprendendo. Pode refazer a pergunta?"]],
 ]
-
-pairs.extend([
-    [r"(.*)",["Entendi. Diga-me mais.","Pode me contar mais sobre isso?","Interessante. Conte-me mais..."]],
-])
 
 reflections = {
     "eu": "você",
