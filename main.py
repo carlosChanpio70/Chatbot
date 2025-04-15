@@ -4,7 +4,6 @@ from chatbot import Chatbot
 #DentalBot
 
 
-# Add custom CSS to disable scrolling on the page
 ui.add_head_html("""
 <style>
     body {
