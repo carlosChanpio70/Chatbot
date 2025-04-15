@@ -15,14 +15,15 @@ pairs = [
     [r"quem é você\?", [
         "Eu sou o DentalBot, um assistente virtual especializado em cuidados dentários."]],
     [r"o que você faz\?", [
-        "Eu sou um chatbot especializado em cuidados dentários. Posso responder perguntas sobre saúde bucal."]],
+        "Posso responder perguntas sobre saúde bucal."]],
     [r"como o que\?|de que forma\?|como você ajuda\?", [
         "Posso ajudar com informações sobre escovação, cáries, gengivite, cuidados com próteses e muito mais."]],
     [r"como devo escovar os dentes\?", [
         "Você deve escovar os dentes por pelo menos 2 minutos, 2 a 3 vezes ao dia, com uma escova macia e creme dental."]],
     [r"como evitar cáries\?", [
         "Escove os dentes regularmente, use fio dental, evite açúcar em excesso e visite seu dentista regularmente."]],
-    [r"o que é uma cárie\?", ["A cárie é uma deterioração dos dentes causada por bactérias que produzem ácidos a partir de restos de alimentos."]],
+    [r"o que é uma cárie\?", [
+        "A cárie é uma deterioração dos dentes causada por bactérias que produzem ácidos a partir de restos de alimentos."]],
     [r"devo usar fio dental diariamente\?", [
         "Sim! O uso diário do fio dental ajuda a remover a placa entre os dentes e prevenir gengivite e cáries."]],
     [r"o que causa o mau hálito\?", [
@@ -98,14 +99,19 @@ def Chatbot(user_input):
 
     # Iterate through the defined patterns
     for pattern, responses in pairs:
-        pattern_tokens = nltk.word_tokenize(pattern.lower())
+        # Split the pattern into alternatives using '|'
+        alternatives = pattern.split('|')
 
-        # Find common tokens between the user input and the pattern
-        common_tokens = set(tokens) & set(pattern_tokens)
+        for alternative in alternatives:
+            # Tokenize the alternative pattern
+            pattern_tokens = nltk.word_tokenize(alternative.lower())
 
-        # Heuristic to check for a match based on the number of common tokens
-        if common_tokens and len(common_tokens) >= len(pattern_tokens) // 2:
-            return chatbot.respond(pattern)
+            # Find common tokens between the user input and the pattern
+            common_tokens = set(tokens) & set(pattern_tokens)
+
+            # Heuristic to check for a match based on the number of common tokens
+            if common_tokens and len(common_tokens) >= len(pattern_tokens) // 2:
+                return responses[0]  # Return the first response for simplicity
 
     # Fallback to the original regex-based matching if no token-based match is found
     return chatbot.respond(user_input)
