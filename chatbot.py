@@ -97,55 +97,45 @@ chatbot = Chat(pairs, reflections)
 def Chatbot(user_input):
     user_input = user_input.lower()
     best_match = None
-    best_score = float('inf')  # Lower scores are better for edit distance
+    best_score = float('inf') #Menor score é melhor para distance
 
-    # Iterate through the defined patterns
     for pattern, responses in pairs:
-        # Split the pattern into alternatives using '|'
+        #Aplicar separador '|'
         alternatives = pattern.split('|')
 
         for alternative in alternatives:
-            # Calculate the Levenshtein distance between the user input and the pattern
+            # Calcular distancia Levenshtein
             distance = edit_distance(user_input, alternative.lower())
 
-            # Update the best match if the current distance is smaller
             if distance < best_score:
                 best_match = responses[0]
                 best_score = distance
 
-    # Return the best match if the score is within a reasonable threshold
-    if best_score <= 10:  # Adjust the threshold based on testing
+    if best_score <= 10: #Ajustar de acordo com testes
         return best_match
 
-    # Fallback to the original regex-based matching if no good match is found
+    #Fallback para regex
     return chatbot.respond(user_input)
 
 def test_chatbot():
     failed_tests = []
     for pattern, responses in pairs:
-        # Use the first alternative in the pattern for testing
-        test_input = pattern.split('|')[0].replace(r'\?', '?')  # Replace escaped '?' for natural input
+        test_input = pattern.split('|')[0].replace(r'\?', '?')
         expected_response = responses[0]
 
-        # Get the chatbot's response
         actual_response = Chatbot(test_input)
 
-        # Check if the response matches the expected response
         if actual_response != expected_response:
             failed_tests.append((test_input, expected_response, actual_response))
 
-    # Print the test results
     if not failed_tests:
-        print("All tests passed!")
+        print("Todos passaram!")
     else:
-        print(f"{len(failed_tests)} test(s) failed:")
+        print(f"{len(failed_tests)} testes falharam:")
         for test_input, expected, actual in failed_tests:
-            print(f"Input: {test_input}")
-            print(f"Expected: {expected}")
-            print(f"Actual: {actual}")
+            print(f"Entrada: {test_input}")
+            print(f"Expectado: {expected}")
+            print(f"Atual: {actual}")
             print("-" * 50)
         
-        
-if __name__ == "__main__":
-    # Run the tests when the script is executed directly
-    test_chatbot()
+test_chatbot()
