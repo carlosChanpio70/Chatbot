@@ -138,4 +138,5 @@ def test_chatbot():
             print(f"Atual: {actual}")
             print("-" * 50)
         
-test_chatbot()
+if __name__ == "__main__":
+    test_chatbot()
