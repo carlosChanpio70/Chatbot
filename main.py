@@ -2,7 +2,6 @@ import asyncio
 from nicegui import ui
 from ai import SessionManager
 
-
 class SideMenu:
     def __init__(self, chatbot, chat_container):
         self.chatbot = chatbot
