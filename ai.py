@@ -13,12 +13,10 @@ def build_instruction_from_pairs(pairs):
         # Usa apenas o primeiro exemplo de resposta para cada padrão
         question = pattern.replace(r'\?', '?').replace('|', '/')
         answer = responses[0]
-        instructions += f"Usuário: {question}\nDentalBot: {answer}\n"
+        instructions += f"Pergunta: {question} Resposta: {answer}\n"
     return instructions
 
-
 instructions = build_instruction_from_pairs(pairs)
-
 
 class Chatbot:
     def __init__(self, model, session_cm, session):
