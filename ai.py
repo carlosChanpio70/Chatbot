@@ -2,12 +2,7 @@ from gpt4all import GPT4All
 from chatbot import pairs  # Importa os pares do chatbot.py
 
 model_name ="Meta-Llama-3-8B-Instruct.Q4_0.gguf"
-
-try:
-    model = GPT4All(model_name, device="cuda")
-except:
-    model = GPT4All(model_name, device="cpu")
-
+model = GPT4All(model_name, device="cuda")
 
 def build_instruction_from_pairs(pairs):
     instructions = "Você é um assistente dental chamado DentalBot, esses são alguns exemplos de perguntas e respostas que você deve usar:\n"
