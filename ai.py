@@ -2,7 +2,10 @@ from gpt4all import GPT4All
 from chatbot import pairs  # Importa os pares do chatbot.py
 
 model_name ="Meta-Llama-3-8B-Instruct.Q4_0.gguf"
-model = GPT4All(model_name, device="cuda")
+try:
+    model = GPT4All(model_name, device="cuda")
+except:
+    model = GPT4All(model_name, device="cpu")
 
 def build_instruction_from_pairs(pairs):
     instructions = "Você é um assistente dental chamado DentalBot, esses são alguns exemplos de perguntas e respostas que você deve usar:\n"
@@ -41,11 +44,14 @@ class SessionManager:
         self.sessions = {}  # session_name: Chatbot instance
         self.active_session_name = None
 
-    def create_session(self):
+    def create_session(self, name=None):
         session_cm = self.model.chat_session(system_prompt=instructions)
         session = session_cm.__enter__()
         chatbot = Chatbot(self.model, session_cm, session)
-        session_name = f"session_{len(self.sessions) + 1}"
+        if name== None:
+            session_name = f"session_{len(self.sessions) + 1}"
+        else:
+            session_name = name
         self.sessions[session_name] = chatbot
         self.active_session_name = session_name
         return session_name

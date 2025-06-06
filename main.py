@@ -2,6 +2,9 @@ import asyncio
 from nicegui import ui
 from ai import SessionManager
 
+ui.query('.nicegui-content').classes('p-0 gap-0')
+
+
 class SideMenu:
     def __init__(self, chatbot, chat_container):
         self.chatbot = chatbot
@@ -9,10 +12,14 @@ class SideMenu:
         self.chat_sessions = []
         self.chat_displays = {}
         self.chat_buttons = {}  # Novo: dicionário para guardar os botões
-        with ui.column().classes('w-64 h-screen bg-white shadow-lg justify-start items-stretch'):
+        with ui.column().classes('w-64 h-screen bg-gray-200 shadow-lg justify-start items-stretch'):
             ui.label('DentalBot').classes('text-xl font-bold p-4 border-b')
-            ui.button('Novo Chat', icon='add', on_click=self.new_chat).classes(
-                'w-full justify-start')
+            ui.button(
+                'Novo Chat',
+                icon='add',
+                on_click=self.new_chat,
+                color='gray-400'
+            ).classes('w-full justify-start height:42px;').props('rounded dense')
             self.buttons_column = ui.column()
 
     def select_chat(self, session_name):
@@ -22,18 +29,28 @@ class SideMenu:
         self.chat_displays[session_name].show()
 
     def new_chat(self):
-        session_name = self.chatbot.create_session()
+        base_name = "Chat"
+        i = 1
+        while f"{base_name} {i}" in self.chat_sessions:
+            i += 1
+        session_name = f"{base_name} {i}"
+        self.chatbot.create_session(session_name)
         self.chat_sessions.append(session_name)
         with self.buttons_column:
-            with ui.row().classes('w-full items-center') as row:
-                btn_chat = ui.button(session_name, on_click=lambda s=session_name: self.select_chat(s)).classes(
-                    'flex-1 justify-start text-left').props('rounded outlined dense')
-                btn_del = ui.button(icon='delete', color='red', on_click=lambda s=session_name: self.deletar_chat(
-                    s)).props('flat round dense')
-                # Salva o row (linha de botões) para fácil deleção
+            with ui.element('div').classes('w-full relative my-1').style('height:42px;') as row:
+                btn_chat = ui.button(
+                    session_name,
+                    on_click=lambda s=session_name: self.select_chat(s),
+                    color='gray-400'
+                ).classes('w-full h-full justify-start').props('rounded dense')
+                btn_del = ui.button(
+                    icon='delete',
+                    color='red',
+                    on_click=lambda s=session_name: self.deletar_chat(s)
+                ).props('flat round dense').classes('absolute').style('top:4px;right:4px;width:28px;height:28px;')
                 self.chat_buttons[session_name] = row
         self.chat_displays[session_name] = ChatDisplay(
-            self.chat_container, self.chatbot, session=session_name)
+            self.chat_container, self.chatbot)
         self.select_chat(session_name)
 
     def deletar_chat(self, session_name):
@@ -54,23 +71,27 @@ class SideMenu:
 
 
 class ChatDisplay:
-    def __init__(self, container, chatbot, session=None):
+    def __init__(self, container, chatbot):
         with container:
-            self.root = ui.column().classes('w-full')
+            self.root = ui.column().classes('w-full h-screen overflow-hidden bg-gray-200')
             with self.root:
-                ui.label(f'Chat: {session}').classes(
-                    'text-2xl font-bold text-center p-4 border-b border-gray-300 shadow-sm')
-                with ui.card().classes('w-full h-[80vh] flex flex-col shadow-lg mb-8 bg-gray-200'):
+                with ui.card().classes('w-full flex-1 flex flex-col shadow-lg bg-gray-200'):
                     with ui.scroll_area().classes('flex-1 w-full border') as chat_scroll:
                         chat = ui.markdown().classes('w-full')
-                    with ui.row().classes("w-full p-2"):
-                        input_box = ui.input().props('rounded outlined dense').classes("flex-1")
+                    with ui.element('div').classes("w-full relative my-1"):
+                        input_box = ui.input().props('rounded outlined dense').classes('w-full h-full')
+                        ui.button(
+                            icon='send',
+                            color='gray-400',  # Add this line
+                            on_click=lambda: asyncio.create_task(send())
+                        ).props('flat round dense').classes('absolute').style(
+                            'top:50%;right:4px;width:28px;height:28px;transform:translateY(-50%);'
+                        )
 
                         async def send():
                             user_input = input_box.value
                             if not user_input or user_input.strip() == '':
                                 return
-                            # Executa chatbot.chat em thread para não travar a interface
                             loop = asyncio.get_event_loop()
                             result = await loop.run_in_executor(None, chatbot.chat, user_input)
                             with ui.teleport(f'#c{chat.id}'):
@@ -82,7 +103,6 @@ class ChatDisplay:
                             input_box.value = ''
 
                         input_box.on('keydown.enter', send)
-                        ui.button(icon='send', on_click=send)
 
     def hide(self):
         self.root.set_visibility(False)
@@ -94,7 +114,8 @@ class ChatDisplay:
 chatbot = SessionManager()
 with ui.row().classes('w-full h-screen'):
     menu = SideMenu(chatbot, None)
-    chat_container = ui.column().classes('flex-1 h-screen justify-end items-center')
+    # removed justify-end items-center
+    chat_container = ui.column().classes('flex-1 h-screen overflow-hidden')
     menu.chat_container = chat_container
     menu.new_chat()
 
