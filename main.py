@@ -4,6 +4,27 @@ from ai import SessionManager
 
 ui.query('.nicegui-content').classes('p-0 gap-0')
 
+ui.add_head_html("""
+<style>
+.background_color {
+    background-color: #121212 !important;
+}
+.background_color2 {
+    background-color: #1d1d1d !important;
+}
+.button_color {
+    background-color: #2c2c2c !important;
+}
+body, .nicegui-content, .background_color, .background_color2, .button_color, .q-card, .q-btn, .q-label, .q-input, .q-field__native, .q-field__label, .q-field__control, .q-field__marginal, .q-field__append, .q-field__prepend, .q-field__bottom {
+    color: #fff !important;
+}
+.grey_border {
+    border-color: #2c2c2c !important;
+    box-shadow: 0 0 0 2px #2c2c2c !important;
+}
+</style>
+""")
+
 
 class SideMenu:
     def __init__(self, chatbot, chat_container):
@@ -12,13 +33,13 @@ class SideMenu:
         self.chat_sessions = []
         self.chat_displays = {}
         self.chat_buttons = {}  # Novo: dicionário para guardar os botões
-        with ui.column().classes('w-64 h-screen bg-gray-200 shadow-lg justify-start items-stretch'):
-            ui.label('DentalBot').classes('text-xl font-bold p-4 border-b')
+        with ui.column().classes('w-64 h-screen background_color shadow-lg justify-start items-stretch'):
+            ui.label('DentalBot').classes('text-xl font-bold p-4 border-b grey_border')
             ui.button(
                 'Novo Chat',
                 icon='add',
                 on_click=self.new_chat,
-                color='gray-400'
+                color='#2c2c2c'
             ).classes('w-full justify-start height:42px;').props('rounded dense')
             self.buttons_column = ui.column()
 
@@ -41,7 +62,7 @@ class SideMenu:
                 btn_chat = ui.button(
                     session_name,
                     on_click=lambda s=session_name: self.select_chat(s),
-                    color='gray-400'
+                    color='#2c2c2c'
                 ).classes('w-full h-full justify-start').props('rounded dense')
                 btn_del = ui.button(
                     icon='delete',
@@ -73,10 +94,10 @@ class SideMenu:
 class ChatDisplay:
     def __init__(self, container, chatbot):
         with container:
-            self.root = ui.column().classes('w-full h-screen overflow-hidden bg-gray-200')
+            self.root = ui.column().classes('w-full h-screen overflow-hidden background_color2')
             with self.root:
-                with ui.card().classes('w-full flex-1 flex flex-col shadow-lg bg-gray-200'):
-                    with ui.scroll_area().classes('flex-1 w-full border') as chat_scroll:
+                with ui.card().classes('w-full flex-1 flex flex-col shadow-lg background_color2'):
+                    with ui.scroll_area().classes('flex-1 w-full border grey_border') as chat_scroll:
                         chat = ui.markdown().classes('w-full')
                     with ui.element('div').classes("w-full relative my-1"):
                         input_box = ui.input().props('rounded outlined dense').classes('w-full h-full')
@@ -112,10 +133,9 @@ class ChatDisplay:
 
 
 chatbot = SessionManager()
-with ui.row().classes('w-full h-screen'):
+with ui.row().classes('w-full h-screen p-0 gap-0'):
     menu = SideMenu(chatbot, None)
-    # removed justify-end items-center
-    chat_container = ui.column().classes('flex-1 h-screen overflow-hidden')
+    chat_container = ui.column().classes('flex-1 h-screen overflow-hidden p-0 m-0')
     menu.chat_container = chat_container
     menu.new_chat()
 
